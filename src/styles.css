@@ -84,3 +84,12 @@ li:first-letter {
 .description-info {
   margin-left: 50px;
 }
+
+.weather-temperature .active {
+  color: #ffffff;
+  cursor: defualt;
+}
+
+.weather-temperature .active:hover {
+  text-decoration: none;
+}
