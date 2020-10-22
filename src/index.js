@@ -72,7 +72,7 @@ function displayFahrenheitTemperature(event) {
   event.preventDefault();
   let fahrenheitTemp = (celsiusTemp * 9) / 5 + 32;
   let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTL = Math.round(fahrenheitTemp);
+  temperatureElement.innerHTML = Math.round(fahrenheitTemp);
 }
 
 let dateElement = document.querySelector("#date");
