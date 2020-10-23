@@ -23,6 +23,17 @@ function formatDate(date) {
   return `${day} ${hours}:${minutes}`;
 }
 
+function formatHours(date) {
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+}
+
 function displayWeatherCondition(response) {
   celsiusTemp = response.data.main.temp;
   document.querySelector("#city").innerHTML = response.data.name;
@@ -40,15 +51,33 @@ function displayWeatherCondition(response) {
   icon.setAttribute("alt", response.data.weather[0].description);
 }
 
+function displayForecast(response) {
+  let forecastElement = document.querySelector("#forecast");
+  let forecast = response.data.list[0];
+  console.log(forecast);
+
+  forecastElement.innerHTML = `
+  <div class="col-2">
+  ${forecast.dt * 1000}
+  <img src="http://openweathermap.org/img/wn/${
+    forecast.weather[0].icon
+  }@2x.png"/>
+  <div class="weather-forecast-temp">
+  <strong>${Math.round(forecast.main.temp_max)}°</strong>${Math.round(
+    forecast.main.temp_min
+  )}°
+  </div>
+  </div>
+  `;
+}
+
 function searchCity(city) {
   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayWeatherCondition);
-}
 
-function searchCountry(country) {
-  let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${apiKey}&units=metric`;
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
 }
 
 function handleSubmit(event) {
@@ -105,4 +134,4 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
-searchCity("New York");
+searchCity("Houston");
