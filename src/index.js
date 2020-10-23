@@ -32,6 +32,7 @@ function formatHours(date) {
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
+  return `${hours}:${minutes}`;
 }
 
 function displayWeatherCondition(response) {
@@ -53,22 +54,25 @@ function displayWeatherCondition(response) {
 
 function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
-  let forecast = response.data.list[0];
-  console.log(forecast);
+  forecastElement.innerHTML = null;
+  let forecast = null;
 
-  forecastElement.innerHTML = `
+  for (let index = 0; index < 6; index++) {
+    forecast = response.data.list[index];
+    forecastElement.innerHTML += `
   <div class="col-2">
-  ${forecast.dt * 1000}
+  ${formatHours(new Date(forecast.dt * 1000))}
   <img src="http://openweathermap.org/img/wn/${
     forecast.weather[0].icon
   }@2x.png"/>
   <div class="weather-forecast-temp">
   <strong>${Math.round(forecast.main.temp_max)}°</strong>${Math.round(
-    forecast.main.temp_min
-  )}°
+      forecast.main.temp_min
+    )}°
   </div>
   </div>
   `;
+  }
 }
 
 function searchCity(city) {
